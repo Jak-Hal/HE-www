@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haluska Engineering - Standalone</title>
+    
+    <!-- Tailwind CSS 4 CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- React & Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion (Motion) -->
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --color-primary: oklch(0.65 0.2 150);
+            --color-background: oklch(0.98 0.005 240);
+            --color-foreground: oklch(0.15 0.01 240);
+            --color-muted: oklch(0.95 0.01 240);
+            --color-muted-foreground: oklch(0.45 0.02 240);
+            --color-border: oklch(0.9 0.01 240);
+        }
+
+        @layer base {
+            body {
+                @apply bg-background text-foreground antialiased font-sans;
+            }
+        }
+
+        .grid-lines {
+            background-image: 
+                linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .bg-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='0' y='40' font-family='monospace' font-size='20' fill='rgba(0,0,0,0.03)' transform='rotate(-45 30 30)'%3Els%3C/text%3E%3C/svg%3E");
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: var(--color-primary);
+            opacity: 0.1;
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence, useScroll, useSpring } = FramerMotion;
+
+        // Lucide Icon Component Wrapper
+        const Icon = ({ name, className }) => {
+            const iconRef = useRef(null);
+            useEffect(() => {
+                if (iconRef.current) {
+                    const icon = lucide.icons[name];
+                    if (icon) {
+                        const svg = icon.toSvg({ class: className });
+                        iconRef.current.innerHTML = svg;
+                    }
+                }
+            }, [name, className]);
+            return <span ref={iconRef} className="inline-flex items-center justify-center" />;
+        };
+
+        const Button = ({ children, variant = "primary", size = "md", className = "", ...props }) => {
+            const variants = {
+                primary: "bg-primary text-white hover:opacity-90",
+                outline: "border border-border bg-transparent hover:bg-muted text-foreground",
+                link: "text-primary hover:underline p-0 h-auto"
+            };
+            const sizes = {
+                sm: "px-4 py-2 text-sm",
+                md: "px-6 py-3 text-base",
+                lg: "px-8 py-4 text-lg"
+            };
+            return (
+                <button 
+                    className={`inline-flex items-center justify-center rounded-md font-mono uppercase tracking-tighter transition-all active:scale-95 ${variants[variant]} ${sizes[size]} ${className}`}
+                    {...props}
+                >
+                    {children}
+                </button>
+            );
+        };
+
+        const Navbar = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            return (
+                <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center h-16">
+                            <div className="flex items-center gap-2 group cursor-pointer">
+                                <Icon name="Cpu" className="w-8 h-8 text-primary group-hover:rotate-90 transition-transform duration-500" />
+                                <div className="flex flex-col leading-none">
+                                    <span className="text-xl font-bold tracking-tighter uppercase">
+                                        Haluska<span className="text-primary">.</span>
+                                    </span>
+                                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                                        Engineering
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="hidden md:flex items-center gap-8">
+                                {["Services", "About", "Projects", "Contact"].map(item => (
+                                    <a key={item} href={`#${item.toLowerCase()}`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider">{item}</a>
+                                ))}
+                                <Button size="sm">Get Started</Button>
+                            </div>
+                            <div className="md:hidden">
+                                <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-muted-foreground">
+                                    <Icon name={isOpen ? "X" : "Menu"} className="w-6 h-6" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {isOpen && (
+                        <div className="md:hidden bg-white border-b border-border p-4 space-y-4">
+                            {["Services", "About", "Projects", "Contact"].map(item => (
+                                <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setIsOpen(false)} className="block text-sm font-medium text-muted-foreground uppercase tracking-wider">{item}</a>
+                            ))}
+                            <Button className="w-full">Get Started</Button>
+                        </div>
+                    )}
+                </nav>
+            );
+        };
+
+        const Hero = () => (
+            <section className="relative pt-32 pb-20 overflow-hidden min-h-[90vh] flex items-center">
+                <div className="absolute inset-0 grid-lines opacity-20 pointer-events-none" />
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono uppercase tracking-wider mb-6">
+                                <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+                                Available for new projects
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.9] mb-6 uppercase">
+                                Precision <span className="text-primary">Engineering</span> for the Future.
+                            </h1>
+                            <p className="text-lg text-muted-foreground mb-10 max-w-lg">
+                                We bridge the gap between complex ideas and tangible reality through advanced robotics, mechanical design, and technical consultancy.
+                            </p>
+                            <div className="flex flex-wrap gap-4">
+                                <Button size="lg">Start a Project</Button>
+                                <Button size="lg" variant="outline">View Portfolio</Button>
+                            </div>
+                        </motion.div>
+                        <div className="relative hidden lg:block">
+                            <div className="aspect-square bg-primary/5 rounded-3xl border border-primary/10 backdrop-blur-3xl overflow-hidden relative">
+                                <div className="absolute inset-0 grid-lines opacity-40" />
+                                <div className="scanline" />
+                                <div className="absolute inset-0 flex items-center justify-center text-[200px] font-bold text-primary/5 select-none">HE</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Services = () => (
+            <section id="services" className="py-24 bg-muted/30 relative">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="mb-16">
+                        <h2 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-4">Our Expertise</h2>
+                        <h3 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase">Engineering Solutions.</h3>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {[
+                            { title: "Robotics Design", icon: "Cpu" },
+                            { title: "Mechanical Engineering", icon: "Settings" },
+                            { title: "Technical Consultancy", icon: "Microscope" },
+                            { title: "Rapid Prototyping", icon: "Rocket" },
+                            { title: "System Integration", icon: "Zap" },
+                            { title: "Quality Assurance", icon: "Shield" }
+                        ].map((s, i) => (
+                            <motion.div key={s.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-8 bg-white rounded-2xl border border-border hover:border-primary/50 transition-all">
+                                <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-6">
+                                    <Icon name={s.icon} className="w-6 h-6 text-primary" />
+                                </div>
+                                <h4 className="text-xl font-bold uppercase tracking-tight mb-2">{s.title}</h4>
+                                <p className="text-muted-foreground text-sm">Professional engineering services tailored to your specific needs and operational goals.</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const About = () => (
+            <section id="about" className="py-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div className="aspect-[4/5] rounded-3xl overflow-hidden border border-border relative grayscale hover:grayscale-0 transition-all duration-700">
+                            <img src="https://picsum.photos/seed/engineering/800/1000" className="w-full h-full object-cover" />
+                            <div className="absolute bottom-8 left-8 right-8 p-6 bg-white/40 backdrop-blur-md rounded-2xl border border-white/10">
+                                <h4 className="text-xl font-bold">Jakub Haluska</h4>
+                                <p className="text-xs font-mono uppercase text-muted-foreground">Lead Robotics Engineer</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-4">Who Am I?</h2>
+                            <h3 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase mb-8">Bridging Ideas and Reality.</h3>
+                            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                                Jakub, the Czech-made engineer, is based in northern Sweden. I design robots for the Robotics team at the Luleå University of Technology, and help companies and people to transfer ideas into reality.
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {["Robotics", "CAD/CAM", "R&D", "Automation"].map(tag => (
+                                    <span key={tag} className="px-3 py-1 bg-muted rounded-full text-xs font-mono uppercase tracking-wider">{tag}</span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Contact = () => (
+            <section id="contact" className="py-24 bg-muted/30">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-2 gap-16">
+                        <div>
+                            <h2 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-4">Contact Us</h2>
+                            <h3 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase mb-8">Let's Build Together.</h3>
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-white border border-border flex items-center justify-center"><Icon name="Mail" className="w-5 h-5 text-primary" /></div>
+                                    <div><div className="text-xs font-mono uppercase text-muted-foreground">Email</div><div className="text-lg font-medium">hello@haluska.eng</div></div>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-white border border-border flex items-center justify-center"><Icon name="MapPin" className="w-5 h-5 text-primary" /></div>
+                                    <div><div className="text-xs font-mono uppercase text-muted-foreground">Location</div><div className="text-lg font-medium">Luleå, Sweden</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-white p-8 rounded-3xl border border-border shadow-xl">
+                            <div className="space-y-4">
+                                <input className="w-full p-4 bg-muted/50 border-none rounded-lg" placeholder="Name" />
+                                <input className="w-full p-4 bg-muted/50 border-none rounded-lg" placeholder="Email" type="email" />
+                                <textarea className="w-full p-4 bg-muted/50 border-none rounded-lg min-h-[120px]" placeholder="Message" />
+                                <Button className="w-full">Send Message</Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const App = () => {
+            const { scrollYProgress } = useScroll();
+            const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+            return (
+                <div className="bg-pattern min-h-screen">
+                    <motion.div className="fixed top-0 left-0 right-0 h-1 bg-primary z-[60] origin-left" style={{ scaleX }} />
+                    <Navbar />
+                    <Hero />
+                    <Services />
+                    <About />
+                    <Contact />
+                    <footer className="py-12 border-t border-border text-center">
+                        <p className="text-xs font-mono uppercase text-muted-foreground">© 2026 Haluska Engineering. All rights reserved.</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
