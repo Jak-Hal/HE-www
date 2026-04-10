@@ -1,65 +1,125 @@
 import { motion } from "motion/react";
-import { Cpu, Settings, Zap, Shield, Microscope, Rocket } from "lucide-react";
+import { Settings, Zap, Microscope, Rocket } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const services = [
-  {
-    title: "Robotics Design",
-    description: "End-to-end development of autonomous systems and industrial robotic solutions.",
-    icon: Cpu,
-    color: "text-blue-500",
-  },
-  {
-    title: "Mechanical Engineering",
-    description: "High-precision CAD modeling, stress analysis, and structural optimization.",
-    icon: Settings,
-    color: "text-primary",
-  },
-  {
-    title: "Technical Consultancy",
-    description: "Expert guidance on technology transfer, R&D strategy, and feasibility studies.",
-    icon: Microscope,
-    color: "text-purple-500",
-  },
-  {
-    title: "Rapid Prototyping",
-    description: "Fast-track development from concept to functional prototype using advanced manufacturing.",
-    icon: Rocket,
-    color: "text-orange-500",
-  },
-  {
-    title: "System Integration",
-    description: "Seamlessly connecting hardware and software for complex industrial ecosystems.",
-    icon: Zap,
-    color: "text-yellow-500",
-  },
-  {
-    title: "Quality Assurance",
-    description: "Rigorous testing and validation protocols ensuring mission-critical reliability.",
-    icon: Shield,
-    color: "text-green-500",
-  },
-];
+interface ServicesProps {
+  lang: "en" | "sv" | "cs";
+}
 
-export default function Services() {
+export default function Services({ lang }: ServicesProps) {
+  const t = {
+    en: {
+      title: "Our Expertise",
+      heading: <>Engineering <span className="text-primary">Solutions</span> for Complex Challenges.</>,
+      subheading: "We provide specialized services across multiple engineering disciplines, focusing on innovation and operational excellence.",
+      services: [
+        {
+          title: "Mechanical Engineering",
+          description: "• High-precision CAD modeling\n• Technical drawings\n• Photorealistic renders\n• Design for manufacturing",
+          icon: Settings,
+          color: "text-primary",
+        },
+        {
+          title: "Technical Consultancy",
+          description: "• Complex problem solving\n• Technology stack optimization\n• Technical feasibility studies",
+          icon: Microscope,
+          color: "text-purple-500",
+        },
+        {
+          title: "Rapid Prototyping",
+          description: "• Functional prototypes in Luleå\n• High-fidelity mock-ups\n• Scale models\n• Small series production",
+          icon: Rocket,
+          color: "text-orange-500",
+        },
+        {
+          title: "On-Demand Manufacturing",
+          description: "• 3D printing Luleå\n• CNC milling\n• Laser engraving\n• Single parts or small batches",
+          icon: Zap,
+          color: "text-yellow-500",
+        },
+      ]
+    },
+    sv: {
+      title: "Vår expertis",
+      heading: <>Tekniska <span className="text-primary">lösningar</span> för komplexa utmaningar.</>,
+      subheading: "Vi erbjuder specialiserade tjänster inom flera ingenjörsdiscipliner, med fokus på innovation och operativ excellens.",
+      services: [
+        {
+          title: "Mekanisk konstruktion",
+          description: "• CAD-modellering med hög precision\n• Tekniska ritningar\n• Fotorealistiska renderingar\n• Konstruktion för tillverkning",
+          icon: Settings,
+          color: "text-primary",
+        },
+        {
+          title: "Teknisk konsultation",
+          description: "• Komplex problemlösning\n• Optimering av teknikstack\n• Tekniska genomförbarhetsstudier",
+          icon: Microscope,
+          color: "text-purple-500",
+        },
+        {
+          title: "Snabb prototypframtagning",
+          description: "• Funktionella prototyper i Luleå\n• Högkvalitativa modeller\n• Skalmodeller\n• Småserieproduktion",
+          icon: Rocket,
+          color: "text-orange-500",
+        },
+        {
+          title: "On-Demand tillverkning",
+          description: "• 3D-printing i Luleå\n• CNC-fräsning\n• Lasergravyr\n• Enstaka delar eller små serier",
+          icon: Zap,
+          color: "text-yellow-500",
+        },
+      ]
+    },
+    cs: {
+      title: "Naše odbornost",
+      heading: <>Technická <span className="text-primary">řešení</span> pro komplexní výzvy.</>,
+      subheading: "Poskytujeme specializované služby v několika inženýrských disciplínách se zaměřením na inovace a provozní dokonalost.",
+      services: [
+        {
+          title: "Strojírenství",
+          description: "• Vysoce přesné CAD modelování\n• Technické výkresy\n• Fotorealistické rendery\n• Design pro výrobu",
+          icon: Settings,
+          color: "text-primary",
+        },
+        {
+          title: "Technické poradenství",
+          description: "• Řešení komplexních problémů\n• Optimalizace technologického stacku\n• Studie technické proveditelnosti",
+          icon: Microscope,
+          color: "text-purple-500",
+        },
+        {
+          title: "Rychlé prototypování",
+          description: "• Funkční prototypy v Luleå\n• High-fidelity makety\n• Měřítkové modely\n• Malosériová výroba",
+          icon: Rocket,
+          color: "text-orange-500",
+        },
+        {
+          title: "Výroba na zakázku",
+          description: "• 3D tisk Luleå\n• CNC frézování\n• Laserové gravírování\n• Jednotlivé díly nebo malé série",
+          icon: Zap,
+          color: "text-yellow-500",
+        },
+      ]
+    }
+  }[lang];
+
   return (
     <section id="services" className="py-24 bg-muted/30 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div className="max-w-2xl">
-            <h2 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-4">Our Expertise</h2>
+            <h2 className="text-sm font-mono text-primary uppercase tracking-[0.3em] mb-4">{t.title}</h2>
             <h3 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase">
-              Engineering <span className="text-primary">Solutions</span> for Complex Challenges.
+              {t.heading}
             </h3>
           </div>
           <p className="text-muted-foreground max-w-md text-right hidden md:block">
-            We provide specialized services across multiple engineering disciplines, 
-            focusing on innovation and operational excellence.
+            {t.subheading}
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, index) => (
+        <div className="grid md:grid-cols-2 gap-6">
+          {t.services.map((service, index) => (
             <motion.div
               key={service.title}
               initial={{ opacity: 0, y: 20 }}
@@ -75,7 +135,7 @@ export default function Services() {
                   <CardTitle className="text-xl tracking-tight uppercase">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base leading-relaxed">
+                  <CardDescription className="text-base leading-relaxed whitespace-pre-line">
                     {service.description}
                   </CardDescription>
                 </CardContent>
