@@ -66,7 +66,7 @@ export default function About({ lang }: AboutProps) {
           >
             <div className="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden border border-border group">
               <img
-                src="/Jakub-Haluska-web.jpg"
+                src="Jakub-Haluska-web.jpg"
                 alt="Jakub Haluska"
                 className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
                 referrerPolicy="no-referrer"
