@@ -9,7 +9,15 @@
     <meta property="og:title" content="Haluska Engineering AB | 3D Printing & Prototyping Luleå" />
     <meta property="og:description" content="Professional mechanical engineering and rapid prototyping services in northern Sweden." />
     <meta property="og:type" content="website" />
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/jak-hal/HE-www/main/public/S-logo2.png" />
+    <link rel="icon" type="image/png" href="/S-logo2.png" />
+    <script>
+      console.log('Base URL:', window.location.origin + window.location.pathname);
+      window.addEventListener('error', function(e) {
+        if (e.target.tagName === 'IMG') {
+          console.error('Image failed to load:', e.target.src);
+        }
+      }, true);
+    </script>
   </head>
   <body>
     <div id="root"></div>
