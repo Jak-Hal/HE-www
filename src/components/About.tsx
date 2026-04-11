@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
-import profileImg from "@/assets/Jakub-Haluska-web.jpg";
 
 interface AboutProps {
   lang: "en" | "sv" | "cs";
@@ -67,7 +66,7 @@ export default function About({ lang }: AboutProps) {
           >
             <div className="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden border border-border group">
               <img
-                src={profileImg}
+                src="Jakub-Haluska-web.jpg"
                 alt="Jakub Haluska"
                 className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
                 referrerPolicy="no-referrer"
