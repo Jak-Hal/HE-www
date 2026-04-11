@@ -1,7 +1,7 @@
 import Logo from "./Logo";
 
 interface FooterProps {
-  lang: "en" | "sv" | "cs";
+  lang: "en" | "sv";
 }
 
 export default function Footer({ lang }: FooterProps) {
@@ -20,14 +20,6 @@ export default function Footer({ lang }: FooterProps) {
         { name: "LinkedIn", url: "https://www.linkedin.com/in/haluskajakub/" },
         { name: "Instagram", url: "https://www.instagram.com/haluska.engineering/" },
         { name: "fria 3D-modeller", url: "https://www.printables.com/@Kuba_H_34729/models" }
-      ]
-    },
-    cs: {
-      rights: "Všechna práva vyhrazena.",
-      socials: [
-        { name: "LinkedIn", url: "https://www.linkedin.com/in/haluskajakub/" },
-        { name: "Instagram", url: "https://www.instagram.com/haluska.engineering/" },
-        { name: "3D modely zdarma", url: "https://www.printables.com/@Kuba_H_34729/models" }
       ]
     }
   }[lang];

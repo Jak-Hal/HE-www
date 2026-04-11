@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface ContactProps {
-  lang: "en" | "sv" | "cs";
+  lang: "en" | "sv";
 }
 
 export default function Contact({ lang }: ContactProps) {
@@ -35,18 +35,6 @@ export default function Contact({ lang }: ContactProps) {
         location: "Plats"
       },
       locationValue: "Luleå, Sverige"
-    },
-    cs: {
-      title: "Kontaktujte nás",
-      heading: <>Pojďme společně postavit něco <span className="text-primary">skvělého</span>.</>,
-      description: "Máte komplexní inženýrskou výzvu? Jsme připraveni vám ji pomoci vyřešit. Ozvěte se pro konzultaci nebo dotaz na projekt.",
-      revealBtn: "Zobrazit kontaktní údaje (nejsem robot)",
-      labels: {
-        email: "E-mail",
-        phone: "Telefon",
-        location: "Lokalita"
-      },
-      locationValue: "Luleå, Švédsko"
     }
   }[lang];
 

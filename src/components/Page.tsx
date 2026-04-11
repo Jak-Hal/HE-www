@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { motion, useScroll, useSpring } from "motion/react";
 
 interface PageProps {
-  lang: "en" | "sv" | "cs";
+  lang: "en" | "sv";
 }
 
 export default function Page({ lang }: PageProps) {
@@ -20,8 +20,7 @@ export default function Page({ lang }: PageProps) {
 
   const t = {
     en: ["Prototyping", "Precision", "Innovation", "Engineering"],
-    sv: ["Prototypframtagning", "Precision", "Innovation", "Ingenjörskonst"],
-    cs: ["Prototypování", "Preciznost", "Inovace", "Inženýrství"]
+    sv: ["Prototypframtagning", "Precision", "Innovation", "Ingenjörskonst"]
   }[lang];
 
   return (

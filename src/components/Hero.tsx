@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface HeroProps {
-  lang: "en" | "sv" | "cs";
+  lang: "en" | "sv";
 }
 
 export default function Hero({ lang }: HeroProps) {
@@ -38,27 +38,13 @@ export default function Hero({ lang }: HeroProps) {
       precision: "Precision: 0.001mm",
       layer: "Lager: SKISS_01",
       status: "Status: AKTIV"
-    },
-    cs: {
-      badge: "K dispozici pro nové projekty",
-      heading: <>Od nápadu k <span className="text-primary">funkčnímu</span> prototypu.</>,
-      description: (
-        <>
-          Specializujeme se na rychlé prototypování, 3D tisk a CNC frézování v <strong>Luleå a Norrbottenu</strong>. 
-          Technická řešení na míru pro startupy a inovátory v severním Švédsku.
-        </>
-      ),
-      contactBtn: "Kontakt",
-      precision: "Přesnost: 0.001mm",
-      layer: "Vrstva: SKICA_01",
-      status: "Stav: AKTIVNÍ"
     }
   }[lang];
 
   const objects = [
     {
       id: "CIR-01",
-      name: { en: "Circle Sketch", sv: "Cirkelskiss", cs: "Náčrt kruhu" }[lang],
+      name: { en: "Circle Sketch", sv: "Cirkelskiss" }[lang],
       render: () => (
         <svg viewBox="0 0 100 100" className="w-full h-full text-primary/40">
           <motion.circle 
@@ -89,7 +75,7 @@ export default function Hero({ lang }: HeroProps) {
     },
     {
       id: "RECT-02",
-      name: { en: "Square Sketch", sv: "Kvadratisk skiss", cs: "Náčrt čtverce" }[lang],
+      name: { en: "Square Sketch", sv: "Kvadratisk skiss" }[lang],
       render: () => (
         <svg viewBox="0 0 100 100" className="w-full h-full text-primary/40">
           <motion.rect 
@@ -120,7 +106,7 @@ export default function Hero({ lang }: HeroProps) {
     },
     {
       id: "TRI-03",
-      name: { en: "Triangle Sketch", sv: "Triangelskiss", cs: "Náčrt trojúhelníku" }[lang],
+      name: { en: "Triangle Sketch", sv: "Triangelskiss" }[lang],
       render: () => (
         <svg viewBox="0 0 100 100" className="w-full h-full text-primary/40">
           <motion.path 
@@ -151,7 +137,7 @@ export default function Hero({ lang }: HeroProps) {
     },
     {
       id: "HEX-04",
-      name: { en: "Hexagon Sketch", sv: "Hexagonskiss", cs: "Náčrt hexagonu" }[lang],
+      name: { en: "Hexagon Sketch", sv: "Hexagonskiss" }[lang],
       render: () => (
         <svg viewBox="0 0 100 100" className="w-full h-full text-primary/40">
           <motion.path 

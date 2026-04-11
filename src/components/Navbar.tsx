@@ -7,11 +7,11 @@ import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
-  lang: "en" | "sv" | "cs";
+  lang: "en" | "sv";
 }
 
 const FlagEU = () => (
-  <svg viewBox="0 0 640 480" className="w-6 h-4 rounded-sm shadow-sm">
+  <svg viewBox="0 0 640 480" className="w-5 h-3 rounded-sm shadow-sm">
     <rect width="640" height="480" fill="#003399"/>
     <g transform="translate(320,240)" fill="#FFCC00">
       {[...Array(12)].map((_, i) => (
@@ -26,46 +26,22 @@ const FlagEU = () => (
 );
 
 const FlagSE = () => (
-  <svg viewBox="0 0 640 480" className="w-6 h-4 rounded-sm shadow-sm">
+  <svg viewBox="0 0 640 480" className="w-5 h-3 rounded-sm shadow-sm">
     <path fill="#006aa7" d="M0 0h640v480H0z"/>
     <path fill="#fecc00" d="M0 192h640v96H0zm160-192h96v480h-96z"/>
   </svg>
 );
 
-const FlagCZ = () => (
-  <svg viewBox="0 0 640 480" className="w-6 h-4 rounded-sm shadow-sm">
-    <path fill="#fff" d="M0 0h640v240H0z"/>
-    <path fill="#d7141a" d="M0 240h640v240H0z"/>
-    <path fill="#11457e" d="M0 0l320 240L0 480z"/>
-  </svg>
-);
-
 export default function Navbar({ lang }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
   const location = useLocation();
-  const langMenuRef = useRef<HTMLDivElement>(null);
 
-  const languages = [
-    { code: "en", flag: <FlagEU />, path: "/", label: "English" },
-    { code: "sv", flag: <FlagSE />, path: "/sv", label: "Svenska" },
-    { code: "cs", flag: <FlagCZ />, path: "/cs", label: "Čeština" },
-  ];
+  const languages = {
+    en: { code: "en", flag: <FlagEU />, path: "/", label: "EN" },
+    sv: { code: "sv", flag: <FlagSE />, path: "/sv", label: "SE" },
+  };
 
-  const currentLang = languages.find(l => l.code === lang) || languages[0];
-  const displayFlag = lang === "en" 
-    ? languages.find(l => l.code === "sv")?.flag 
-    : languages.find(l => l.code === "en")?.flag;
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
-        setIsLangOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const targetLang = lang === "en" ? languages.sv : languages.en;
 
   const t = {
     en: {
@@ -83,14 +59,6 @@ export default function Navbar({ lang }: NavbarProps) {
         { name: "Kontakt", href: "#contact" },
       ],
       contact: "Kontakt"
-    },
-    cs: {
-      links: [
-        { name: "Služby", href: "#services" },
-        { name: "O nás", href: "#about" },
-        { name: "Kontakt", href: "#contact" },
-      ],
-      contact: "Kontakt"
     }
   }[lang];
 
@@ -99,7 +67,7 @@ export default function Navbar({ lang }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-2 group cursor-pointer py-2">
-            <Link to={currentLang.path}>
+            <Link to={lang === "en" ? "/" : "/sv"}>
               <Logo className="w-48 group-hover:scale-[1.02] transition-transform duration-300 origin-left" />
             </Link>
           </div>
@@ -116,45 +84,19 @@ export default function Navbar({ lang }: NavbarProps) {
               </a>
             ))}
             
-            {/* Language Dropdown */}
-            <div className="relative border-l border-border pl-8" ref={langMenuRef}>
-              <button
-                onMouseEnter={() => setIsLangOpen(true)}
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-2 group"
+            {/* Language Toggle */}
+            <div className="border-l border-border pl-8">
+              <Link
+                to={targetLang.path}
+                className="flex items-center gap-2 group hover:opacity-80 transition-opacity"
               >
-                <div className="hover:scale-110 transition-transform flex items-center justify-center ring-1 ring-primary/30 rounded-sm p-0.5">
-                  {displayFlag}
+                <div className="flex items-center justify-center ring-1 ring-primary/30 rounded-sm p-0.5 group-hover:ring-primary/60 transition-all">
+                  {targetLang.flag}
                 </div>
-                <ChevronDown className={cn("w-3 h-3 text-muted-foreground transition-transform duration-300", isLangOpen && "rotate-180")} />
-              </button>
-
-              <AnimatePresence>
-                {isLangOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    onMouseLeave={() => setIsLangOpen(false)}
-                    className="absolute top-full right-0 mt-2 w-40 bg-background border border-border rounded-xl shadow-xl overflow-hidden py-1 z-50"
-                  >
-                    {languages.map((l) => (
-                      <Link
-                        key={l.code}
-                        to={l.path}
-                        onClick={() => setIsLangOpen(false)}
-                        className={cn(
-                          "flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-muted transition-colors",
-                          lang === l.code ? "text-primary font-medium" : "text-muted-foreground"
-                        )}
-                      >
-                        <div className="shrink-0">{l.flag}</div>
-                        <span className="text-xs uppercase tracking-wider font-mono">{l.label}</span>
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                <span className="text-xs font-mono font-bold tracking-wider text-muted-foreground group-hover:text-primary transition-colors">
+                  {targetLang.label}
+                </span>
+              </Link>
             </div>
 
             <motion.div
@@ -175,41 +117,14 @@ export default function Navbar({ lang }: NavbarProps) {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-4">
-            {/* Mobile Language Dropdown */}
-            <div className="relative" ref={langMenuRef}>
-              <button
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-1 ring-1 ring-primary/30 rounded-sm p-1"
-              >
-                {displayFlag}
-              </button>
-              
-              <AnimatePresence>
-                {isLangOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="absolute top-full right-0 mt-2 w-32 bg-background border border-border rounded-lg shadow-lg py-1 z-50"
-                  >
-                    {languages.map((l) => (
-                      <Link
-                        key={l.code}
-                        to={l.path}
-                        onClick={() => setIsLangOpen(false)}
-                        className={cn(
-                          "flex items-center gap-2 px-3 py-2 text-xs",
-                          lang === l.code ? "text-primary" : "text-muted-foreground"
-                        )}
-                      >
-                        {l.flag}
-                        <span className="uppercase font-mono">{l.code}</span>
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {/* Mobile Language Toggle */}
+            <Link
+              to={targetLang.path}
+              className="flex items-center gap-1.5 ring-1 ring-primary/30 rounded-sm p-1.5 hover:ring-primary/60 transition-all"
+            >
+              {targetLang.flag}
+              <span className="text-[10px] font-mono font-bold text-muted-foreground">{targetLang.label}</span>
+            </Link>
 
             <button
               onClick={() => setIsOpen(!isOpen)}

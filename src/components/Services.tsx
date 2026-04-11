@@ -3,7 +3,7 @@ import { Settings, Zap, Microscope, Rocket } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ServicesProps {
-  lang: "en" | "sv" | "cs";
+  lang: "en" | "sv";
 }
 
 export default function Services({ lang }: ServicesProps) {
@@ -65,37 +65,6 @@ export default function Services({ lang }: ServicesProps) {
         {
           title: "On-Demand tillverkning",
           description: "• 3D-printing i Luleå\n• CNC-fräsning\n• Lasergravyr\n• Enstaka delar eller små serier",
-          icon: Zap,
-          color: "text-yellow-500",
-        },
-      ]
-    },
-    cs: {
-      title: "Naše odbornost",
-      heading: <>Technická <span className="text-primary">řešení</span> pro komplexní výzvy.</>,
-      subheading: "Poskytujeme specializované služby v několika inženýrských disciplínách se zaměřením na inovace a provozní dokonalost.",
-      services: [
-        {
-          title: "Strojírenství",
-          description: "• Vysoce přesné CAD modelování\n• Technické výkresy\n• Fotorealistické rendery\n• Design pro výrobu",
-          icon: Settings,
-          color: "text-primary",
-        },
-        {
-          title: "Technické poradenství",
-          description: "• Řešení komplexních problémů\n• Optimalizace technologického stacku\n• Studie technické proveditelnosti",
-          icon: Microscope,
-          color: "text-purple-500",
-        },
-        {
-          title: "Rychlé prototypování",
-          description: "• Funkční prototypy v Luleå\n• High-fidelity makety\n• Měřítkové modely\n• Malosériová výroba",
-          icon: Rocket,
-          color: "text-orange-500",
-        },
-        {
-          title: "Výroba na zakázku",
-          description: "• 3D tisk Luleå\n• CNC frézování\n• Laserové gravírování\n• Jednotlivé díly nebo malé série",
           icon: Zap,
           color: "text-yellow-500",
         },

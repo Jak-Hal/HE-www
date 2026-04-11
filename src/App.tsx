@@ -7,7 +7,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Page lang="en" />} />
         <Route path="/sv" element={<Page lang="sv" />} />
-        <Route path="/cs" element={<Page lang="cs" />} />
         {/* Fallback to English */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

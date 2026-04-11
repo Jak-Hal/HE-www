@@ -36,21 +36,6 @@ export default function About({ lang }: AboutProps) {
       ),
       skills: ["Prototypframtagning", "3D-printing", "CNC-fräsning", "CAD/CAM", "Lasergravyr", "Metallbearbetning", "FoU"],
       role: "Mekanisk ingenjör och grundare"
-    },
-    cs: {
-      title: "Kdo jsem?",
-      heading: <>Proměňuji <span className="text-primary">koncepty</span> v realitu.</>,
-      description: (
-        <>
-          <p>
-            Jakub je strojní inženýr "Czech-made" působící v <strong>Luleå v Norrbottenu</strong>, který mění nápady ve 
-            skutečné věci. Prostřednictvím Haluska Engineering AB pomáhá firmám i jednotlivcům 
-            přivádět jejich koncepty k životu pomocí 3D CAD, 3D tisku, CNC frézování a dalších technologií.
-          </p>
-        </>
-      ),
-      skills: ["Prototypování", "3D tisk", "CNC frézování", "CAD/CAM", "Laserové gravírování", "Kovoobrábění", "VaV"],
-      role: "Strojní inženýr a zakladatel"
     }
   }[lang];
 
